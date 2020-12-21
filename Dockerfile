@@ -12,6 +12,8 @@ RUN apt-get -y install curl
 
 RUN apt-get install -y p7zip-full
 
+RUN apt install -y maven
+
 RUN apt-get install -y build-essential cmake python3.6 python3-pip python3-dev
 RUN pip3 --q install pip --upgrade
 
@@ -46,25 +48,14 @@ RUN ln -s /usr/local/spark-2.4.4-bin-hadoop2.7/jars spark-jars
 
 # compile NupackSpark
 
-RUN javac -cp ".:./spark-jars/spark-core_2.11-2.4.4.jar:./spark-jars/scala-library-2.11.12.jar:./spark-jars/commons-cli-1.2.jar:./spark-jars/log4j-1.2.17.jar" ./src/*.java -d ./bin 
+RUN javac -cp ".:./spark-jars/spark-core_2.11-2.4.4.jar:
+./spark-jars/scala-library-2.11.12.jar:./spark-jars/commons-cli-1.2.jar:
+./spark-jars/log4j-1.2.17.jar" ./src/*.java -d ./bin 
 
 WORKDIR ./bin
 RUN jar cvf nps.jar *.class
 RUN cp nps.jar /DNATransformer/Notebooks
 
-# compile DNAGenerator
-
-ARG CLI_ARCHIVE=https://archive.apache.org/dist/commons/cli/binaries/commons-cli-1.4-bin.tar.gz
-RUN curl -s $CLI_ARCHIVE | tar -xz -C /usr/local/
-
-WORKDIR /DNATransformer/src/DNAGenerator
-
-RUN ln -s /usr/local/commons-cli-1.4 commons-cli
-
-RUN javac -cp ".:./commons-cli/commons-cli-1.4.jar" ./src/*.java -d ./bin
-WORKDIR ./bin
-RUN jar cvf DNAG.jar *.class
-RUN cp DNAG.jar /DNATransformer/Notebooks
 
 # extract the large dataset
 WORKDIR /DNATransformer/DataSets
