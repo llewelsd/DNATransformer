@@ -30,6 +30,8 @@ There are some already prebuilt data-sets and models to work with
 		simulation output for 1,000,000 sequences of length 198
 		Use for testing the DNA_BART_198 model
 		or to test the trainer (if you dare)
+		NOTE: is compressed in a .z file because github
+		is extracted when docker is built
 		
 /Models : contains some models
 	

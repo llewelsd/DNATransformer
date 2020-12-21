@@ -10,6 +10,8 @@ RUN apt-get install -y git
 
 RUN apt-get -y install curl
 
+RUN apt-get install -y p7zip-full
+
 RUN apt-get install -y build-essential cmake python3.6 python3-pip python3-dev
 RUN pip3 --q install pip --upgrade
 
@@ -57,6 +59,10 @@ RUN javac -cp ".:./spark-jars/commons-cli-1.2.jar" ./src/*.java -d ./bin
 WORKDIR ./bin
 RUN jar cvf DNAG.jar *.class
 RUN cp DNAG.jar /Notebooks
+
+# extract the large dataset
+WORKDIR /DataSet
+RUN 7z x dna_big_sim_output.7z
 
 RUN chmod +x startup.sh
 
