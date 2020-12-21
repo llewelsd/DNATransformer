@@ -17,7 +17,8 @@ RUN pip3 --q install pip --upgrade
 
 RUN pip3 install jupyter
 RUN pip3 install torch===1.7.1+cu110 torchvision===0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
-RUN pip3 install --user numpy scipy matplotlib ipython jupyter pandas sympy nose pandas
+RUN pip3 install --user numpy scipy matplotlib pandas sympy nose
+RUN pip3 install transformers
 
 RUN mkdir srcR
 WORKDIR src
