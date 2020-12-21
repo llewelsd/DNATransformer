@@ -20,9 +20,6 @@ RUN pip3 install torch===1.7.1+cu110 torchvision===0.8.2+cu110 torchaudio===0.7.
 RUN pip3 install --user numpy scipy matplotlib pandas sympy nose
 RUN pip3 install transformers
 
-RUN mkdir src
-WORKDIR src
-
 RUN git clone https://github.com/llewelsd/DNATransformer
 
 # install nupack
@@ -39,31 +36,41 @@ WORKDIR /DNATransformer/src
 
 ARG SPARK_ARCHIVE=https://archive.apache.org/dist/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz
 RUN curl -s $SPARK_ARCHIVE | tar -xz -C /usr/local/
+
 ENV SPARK_HOME /usr/local/spark-2.4.4-bin-hadoop2.7
 ENV PATH $PATH:$SPARK_HOME/bin
 
-# compile NupackSpark
+WORKDIR /DNATransformer/src/NupackSpark
 
-WORKDIR ./NupackSpark
+RUN ln -s /usr/local/spark-2.4.4-bin-hadoop2.7/jars spark-jars
+
+# compile NupackSpark
 
 RUN javac -cp ".:./spark-jars/spark-core_2.11-2.4.4.jar:./spark-jars/scala-library-2.11.12.jar:./spark-jars/commons-cli-1.2.jar:./spark-jars/log4j-1.2.17.jar" ./src/*.java -d ./bin 
 
 WORKDIR ./bin
 RUN jar cvf nps.jar *.class
-RUN cp nps.jar /Notebooks
+RUN cp nps.jar /DNATransformer/Notebooks
 
 # compile DNAGenerator
 
-WORKDIR /src/DNAGenerator
+ARG CLI_ARCHIVE=https://archive.apache.org/dist/commons/cli/binaries/commons-cli-1.4-bin.tar.gz
+RUN curl -s $CLI_ARCHIVE | tar -xz -C /usr/local/
 
-RUN javac -cp ".:./spark-jars/commons-cli-1.2.jar" ./src/*.java -d ./bin
+WORKDIR /DNATransformer/src/DNAGenerator
+
+RUN ln -s /usr/local/commons-cli-1.4 commons-cli
+
+RUN javac -cp ".:./commons-cli/commons-cli-1.4.jar" ./src/*.java -d ./bin
 WORKDIR ./bin
 RUN jar cvf DNAG.jar *.class
-RUN cp DNAG.jar /Notebooks
+RUN cp DNAG.jar /DNATransformer/Notebooks
 
 # extract the large dataset
-WORKDIR /DataSet
-RUN 7z x dna_big_sim_output.7z
+WORKDIR /DNATransformer/DataSets
+RUN 7z e dna_big_sim_output.7z
+
+WORKDIR /DNATransformer
 
 RUN chmod +x startup.sh
 
