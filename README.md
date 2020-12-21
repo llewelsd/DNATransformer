@@ -15,6 +15,7 @@ Each notebook does something different
 
 	- Builder : creates the data to train on
 	- Trainer : creates and trains a BART model on that data
+		NOTE: has only been tested with Nvidia 30 series GPU
 	- Tester : tests the created model
 
 There are some already prebuilt data-sets and models to work with
@@ -30,7 +31,7 @@ There are some already prebuilt data-sets and models to work with
 	- dna_big_output.txt
 		simulation output for 1,000,000 sequences of length 198
 		Use for testing the DNA_BART_198 model
-		or to test the trainer (if you dare. took 4 hours in fp16 mode on an RTX 3090)
+		or to test the trainer (if you dare. took 4 hours in fp16 mode on a)
 		NOTE: is compressed in a .z file because github
 		is extracted when docker is built
 

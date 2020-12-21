@@ -48,9 +48,7 @@ RUN ln -s /usr/local/spark-2.4.4-bin-hadoop2.7/jars spark-jars
 
 # compile NupackSpark
 
-RUN javac -cp ".:./spark-jars/spark-core_2.11-2.4.4.jar:
-./spark-jars/scala-library-2.11.12.jar:./spark-jars/commons-cli-1.2.jar:
-./spark-jars/log4j-1.2.17.jar" ./src/*.java -d ./bin 
+RUN javac -cp ".:./spark-jars/spark-core_2.11-2.4.4.jar:./spark-jars/scala-library-2.11.12.jar:./spark-jars/commons-cli-1.2.jar:./spark-jars/log4j-1.2.17.jar" ./src/*.java -d ./bin 
 
 WORKDIR ./bin
 RUN jar cvf nps.jar *.class
