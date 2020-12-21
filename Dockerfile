@@ -20,20 +20,20 @@ RUN pip3 install torch===1.7.1+cu110 torchvision===0.8.2+cu110 torchaudio===0.7.
 RUN pip3 install --user numpy scipy matplotlib pandas sympy nose
 RUN pip3 install transformers
 
-RUN mkdir srcR
+RUN mkdir src
 WORKDIR src
 
-COPY . .
+RUN git clone https://github.com/llewelsd/DNATransformer
 
 # install nupack
 
-WORKDIR /src/nupack3.2.2
+WORKDIR /DNATransformer/src/nupack3.2.2
 RUN mkdir build
 WORKDIR ./build
 RUN cmake ../
 RUN make install
 
-WORKDIR /src
+WORKDIR /DNATransformer/src
 
 # install spark
 
