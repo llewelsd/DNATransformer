@@ -23,7 +23,7 @@ public class NupackWrapper {
 	final static String DANGLES = "some";
 	final static String T = "37";
 	
-	final static String WORKDIR = System.getProperty("user.dir")+"/data";
+	final static String WORKDIR = System.getProperty("user.dir")+"/";
 	
 	//final static String TMPFILE_INPUT = "tmpinput";c
 	final static String TMPFILE = "tmpfile";
